@@ -1,0 +1,29 @@
+{
+  "name": "script-langs-lab1-petrushynets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vl-strong-ad/script-langs-lab1-petrushynets.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/vl-strong-ad/script-langs-lab1-petrushynets/issues"
+  },
+  "homepage": "https://github.com/vl-strong-ad/script-langs-lab1-petrushynets#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
+  }
+}
