@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Журнал клієнтів фітнес-тренера</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-4">
+    <h1 class="text-center text-success mb-4">Журнал клієнтів фітнес-тренера</h1>
+
+    <!-- Форма додавання -->
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <div class="row g-3">
+
+                <div class="col-md-3">
+                    <input id="name" class="form-control" placeholder="Ім’я">
+                </div>
+
+                <div class="col-md-2">
+                    <input id="age" type="number" class="form-control" placeholder="Вік">
+                </div>
+
+                <div class="col-md-2">
+                    <input id="weight" type="number" class="form-control" placeholder="Вага">
+                </div>
+
+                <div class="col-md-3">
+                    <select id="goal" class="form-select">
+                        <option value="Схуднення">Схуднення</option>
+                        <option value="Набір">Набір</option>
+                        <option value="Підтримка форми">Підтримка форми</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 d-grid">
+                    <button class="btn btn-success" onclick="addClient()">Додати</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Пошук -->
+    <input id="search" class="form-control mb-3" placeholder="Пошук по імені..." oninput="loadClients()">
+
+    <!-- Таблиця -->
+    <table class="table table-bordered table-striped">
+        <thead class="table-success">
+        <tr>
+            <th>ID</th>
+            <th>Ім’я</th>
+            <th>Вік</th>
+            <th>Вага</th>
+            <th>Ціль</th>
+            <th>Дії</th>
+        </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</div>
+
+<!-- ===== ВСЯ ЛОГІКА ТУТ ===== -->
+<script>
+async function loadClients() {
+    try {
+        const res = await fetch('/clients');
+        const data = await res.json();
+
+        console.log("Отримані дані з сервера:", data);
+
+        const search = document.getElementById('search').value.toLowerCase();
+        const filtered = data.filter(c => c.name?.toLowerCase().includes(search));
+
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = "";
+
+        filtered.forEach(c => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${c._id}</td>
+                    <td>${c.name ?? "-"}</td>
+                    <td>${c.age ?? "-"}</td>
+                    <td>${c.weight ?? "-"}</td>
+                    <td>${c.goal ?? "-"}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="editClient('${c._id}')">Змінити</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteClient('${c._id}')">Видалити</button>
+                    </td>
+                </tr>
+            `;
+        });
+    } catch (e) {
+        console.error('Помилка при завантаженні клієнтів:', e);
+    }
+}
+
+async function addClient() {
+    const name = document.getElementById('name').value.trim();
+    const age = document.getElementById('age').value.trim();
+    const weight = document.getElementById('weight').value.trim();
+    const goal = document.getElementById('goal').value;
+
+    if (!name || !age || !weight) {
+        alert("Будь ласка, заповніть всі поля!");
+        return;
+    }
+
+    const client = { name, age, weight, goal };
+
+    try {
+        await fetch('/clients', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(client)
+        });
+
+        document.getElementById('name').value = "";
+        document.getElementById('age').value = "";
+        document.getElementById('weight').value = "";
+        document.getElementById('goal').value = "Схуднення";
+
+        await loadClients();
+    } catch (e) {
+        console.error('Помилка при додаванні клієнта:', e);
+    }
+}
+
+async function deleteClient(id) {
+    try {
+        await fetch('/clients/' + id, { method: 'DELETE' });
+        await loadClients();
+    } catch (e) {
+        console.error('Помилка при видаленні клієнта:', e);
+    }
+}
+
+async function editClient(id) {
+    const newName = prompt("Нове ім’я:");
+    const newAge = prompt("Новий вік:");
+    const newWeight = prompt("Нова вага:");
+    const newGoal = prompt("Нова ціль (Схуднення/Набір/Підтримка форми):");
+
+    if (!newName || !newAge || !newWeight || !newGoal) return;
+
+    try {
+        await fetch('/clients/' + id, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: newName,
+                age: newAge,
+                weight: newWeight,
+                goal: newGoal
+            })
+        });
+
+        await loadClients();
+    } catch (e) {
+        console.error('Помилка при редагуванні клієнта:', e);
+    }
+}
+
+// авто-завантаження при відкритті сторінки
+loadClients();
+</script>
+
+</body>
+</html>
