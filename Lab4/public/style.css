@@ -1,0 +1,129 @@
+/* Базовые настройки, чтобы всё выглядело ровно */
+:root{
+  --green: #198754;      /* bootstrap success */
+  --green-2: #157347;
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --border: #e6ebf2;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --shadow: 0 8px 22px rgba(16, 24, 40, 0.08);
+  --radius: 14px;
+}
+
+*{ box-sizing: border-box; }
+
+body{
+  background: var(--bg) !important;
+  color: var(--text);
+}
+
+/* Заголовок */
+h2{
+  font-weight: 800;
+  letter-spacing: .2px;
+  margin-bottom: 18px !important;
+  color: #127a45 !important;
+}
+
+/* Контейнер делаем визуально приятнее */
+.container{
+  max-width: 1050px;
+}
+
+/* Блоки (форма/таблица) — как карточки */
+.card-like{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+/* Поля ввода/селекты */
+.form-control,
+.form-select{
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+}
+
+.form-control:focus,
+.form-select:focus{
+  border-color: rgba(25, 135, 84, 0.35);
+  box-shadow: 0 0 0 .2rem rgba(25, 135, 84, 0.12);
+}
+
+/* Кнопка "Додати" */
+.btn-success{
+  border-radius: 12px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  padding: 10px 14px;
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.btn-success:hover{
+  background: var(--green-2);
+  border-color: var(--green-2);
+}
+
+/* Кнопки в таблице */
+.btn-danger.btn-sm{
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-weight: 600;
+}
+
+/* Таблица — мягкие линии и нормальные отступы */
+.table{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.table thead{
+  background: rgba(25, 135, 84, 0.10) !important;
+}
+
+.table thead th{
+  border-bottom: 1px solid var(--border) !important;
+  color: #0f5132;
+  font-weight: 800;
+  padding: 12px 14px;
+}
+
+.table tbody td{
+  padding: 12px 14px;
+  vertical-align: middle;
+  border-color: var(--border);
+}
+
+.table-striped > tbody > tr:nth-of-type(odd){
+  background: rgba(17, 24, 39, 0.02);
+}
+
+/* Поиск + сортировка чуть компактнее */
+#search{
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+#sort{
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+/* Адаптив под маленькие экраны */
+@media (max-width: 768px){
+  .container{
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  h2{
+    font-size: 22px;
+  }
+}
